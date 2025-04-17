@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Онлайн-запись</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url('background-image.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 30px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 24px;
+        }
+        label {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        input[type="text"], input[type="tel"], input[type="date"], input[type="time"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        @media (max-width: 600px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Онлайн-запись</h1>
+        <form id="bookingForm">
+            <label for="name">Имя:</label>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" required><br>
+
+            <label for="comment">Комментарий:</label>
+            <textarea id="comment" name="comment"></textarea><br>
+
+            <label for="date">Дата:</label>
+            <input type="date" id="date" name="date" required><br>
+
+            <label for="time">Время:</label>
+            <input type="time" id="time" name="time" required><br>
+
+            <label for="master">Мастер:</label>
+            <select id="master" name="master" required>
+                <option value="Иванов">Иванов</option>
+                <option value="Петрова">Петрова</option>
+                <option value="Диагностический центр">Диагностический центр</option>
+                <option value="Автобус #123">Автобус #123</option>
+            </select><br>
+
+            <label for="service">Услуга:</label>
+            <select id="service" name="service" required>
+                <option value="Диагностика авто">Диагностика авто</option>
+                <option value="Терапевт приём">Терапевт приём</option>
+                <option value="Перевозка Магадан–Москва">Перевозка Магадан–Москва</option>
+                <option value="Анализы">Анализы</option>
+            </select><br>
+
+            <button type="button" onclick="submitForm()">Отправить</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function submitForm() {
+            const formData = {
+                name: document.getElementById("name").value,
+                phone: document.getElementById("phone").value,
+                comment: document.getElementById("comment").value,
+                date: document.getElementById("date").value,
+                time: document.getElementById("time").value,
+                master: document.getElementById("master").value,
+                service: document.getElementById("service").value
+            };
+
+            fetch("https://hook.eu2.make.com/nr5n0sjeoy6qn0aed0xc4gaedc4baepg", {
+                method: "POST",
+                body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            })
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("result").innerText = "✅ " + data;
+            })
+            .catch(err => {
+                document.getElementById("result").innerText = "❌ Ошибка отправки: " + err;
+            });
+        }
+    </script>
+</body>
+</html>
